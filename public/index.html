@@ -5,45 +5,59 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Roblox Accounts Steal</title>
 
-  <!-- Particles.js CDN (leve e bonito) -->
-  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-
   <style>
+    :root {
+      --primary: #ff0044;
+      --secondary: #cc0033;
+      --accent: #ff88aa;
+      --dark: #0f001a;
+    }
+
     body, html {
       margin: 0;
       padding: 0;
-      height: 100%;
-      overflow: hidden;
-      background: #0f001a;
-      font-family: 'Segoe UI', Arial, sans-serif;
+      min-height: 100vh;
+      background: var(--dark);
       color: #e0ccff;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      overflow-x: hidden;
     }
 
-    #particles-js {
+    /* Partículas de fundo puras em CSS */
+    .bg-particles {
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      z-index: -2;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      background: 
+        radial-gradient(circle at 15% 25%, rgba(255,255,255,0.07) 0%, transparent 40%),
+        radial-gradient(circle at 85% 75%, rgba(255,255,255,0.05) 0%, transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(255,0,68,0.08) 0%, transparent 60%);
+      background-size: 150% 150%;
+      animation: particleFloat 60s linear infinite;
+    }
+
+    @keyframes particleFloat {
+      0%   { background-position: 0% 0%, 100% 100%, 50% 50%; }
+      100% { background-position: 200% 200%, -100% -100%, 150% 150%; }
     }
 
     .container {
       position: relative;
       z-index: 1;
       display: flex;
-      flex-direction: row;
       min-height: 100vh;
     }
 
     .video-sidebar {
       width: 35%;
       min-width: 320px;
-      background: rgba(26, 0, 51, 0.4);
-      backdrop-filter: blur(8px);
+      background: rgba(15, 0, 26, 0.7);
+      backdrop-filter: blur(6px);
       display: flex;
       flex-direction: column;
       align-items: center;
       padding: 20px 10px;
-      border-right: 1px solid rgba(102, 0, 51, 0.3);
     }
 
     .video-wrapper {
@@ -54,26 +68,20 @@
       border-radius: 16px;
       overflow: hidden;
       box-shadow: 0 10px 30px rgba(255, 0, 68, 0.25);
-      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      transition: all 0.5s ease;
     }
 
     .video-wrapper:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 20px 50px rgba(255, 0, 68, 0.45);
-    }
-
-    .video-wrapper iframe {
-      width: 100%;
-      height: 100%;
+      transform: translateY(-12px) scale(1.04);
+      box-shadow: 0 25px 60px rgba(255, 0, 68, 0.5);
     }
 
     .video-label {
       margin-top: 16px;
       font-size: 1.4em;
-      color: #ff88aa;
-      text-shadow: 0 0 12px #ff0044;
+      color: var(--accent);
+      text-shadow: 0 0 12px var(--primary);
       font-weight: bold;
-      letter-spacing: 1px;
     }
 
     #main-content {
@@ -84,188 +92,183 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      background: rgba(15, 0, 26, 0.6);
-      backdrop-filter: blur(6px);
     }
 
+    /* Pulsar suave + glitch leve no título */
     h1 {
-      color: #ff0044;
       font-size: 3.8em;
-      margin-bottom: 20px;
-      text-shadow: 0 0 30px #ff0044, 0 0 60px #cc0033;
-      animation: glowPulse 3s infinite alternate;
+      color: var(--primary);
+      text-shadow: 0 0 20px var(--primary);
+      animation: neonPulse 3s infinite alternate, glitchText 4s infinite;
     }
 
-    @keyframes glowPulse {
-      0% { text-shadow: 0 0 20px #ff0044; }
-      100% { text-shadow: 0 0 50px #ff0044, 0 0 80px #cc0033; }
+    @keyframes neonPulse {
+      0%   { text-shadow: 0 0 10px var(--primary); }
+      100% { text-shadow: 0 0 60px var(--primary), 0 0 100px var(--secondary); }
     }
 
-    .subtitle {
-      color: #ff88aa;
+    @keyframes glitchText {
+      0%, 100% { transform: translate(0); }
+      2%, 4%   { transform: translate(2px, -2px); }
+      6%       { transform: translate(-2px, 2px); }
+    }
+
+    /* Texto digitando */
+    .typing {
+      overflow: hidden;
+      border-right: .15em solid var(--primary);
+      white-space: nowrap;
+      margin: 0 auto 40px;
       font-size: 1.8em;
-      margin-bottom: 40px;
-      text-shadow: 0 0 15px #ff88aa;
+      animation: typing 4s steps(40, end) infinite, blink 0.75s step-end infinite;
+    }
+
+    @keyframes typing {
+      from { width: 0; }
+      to   { width: 100%; }
+    }
+
+    @keyframes blink {
+      from, to   { border-color: transparent; }
+      50%        { border-color: var(--primary); }
+    }
+
+    input, button {
+      margin: 15px 0;
+      padding: 18px;
+      font-size: 20px;
+      border-radius: 12px;
+      transition: all 0.3s;
     }
 
     input {
       width: 90%;
       max-width: 550px;
-      padding: 18px;
-      font-size: 20px;
-      border: 2px solid #660033;
-      border-radius: 12px;
+      border: 2px solid var(--secondary);
       background: rgba(26, 0, 51, 0.7);
       color: #ffccdd;
-      margin-bottom: 25px;
       box-shadow: inset 0 0 12px rgba(102, 0, 51, 0.5);
-      transition: all 0.3s;
     }
 
     input:focus {
-      border-color: #ff0044;
+      border-color: var(--primary);
       box-shadow: 0 0 20px rgba(255, 0, 68, 0.6);
       outline: none;
     }
 
+    /* Animação de contorno (outline glow) */
+    .outline-glow {
+      position: relative;
+    }
+
+    .outline-glow::before {
+      content: "";
+      position: absolute;
+      inset: -6px;
+      border: 3px solid var(--primary);
+      border-radius: 18px;
+      opacity: 0;
+      animation: outlinePulse 3s infinite;
+      pointer-events: none;
+    }
+
+    @keyframes outlinePulse {
+      0%, 100% { opacity: 0; transform: scale(1); }
+      50%      { opacity: 0.7; transform: scale(1.08); }
+    }
+
     button {
-      padding: 18px 80px;
-      font-size: 22px;
-      background: linear-gradient(90deg, #ff0044, #cc0033);
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
       color: white;
       border: none;
-      border-radius: 12px;
       cursor: pointer;
       font-weight: bold;
       box-shadow: 0 0 25px rgba(255, 0, 68, 0.6);
-      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
     }
 
     button:hover {
       transform: translateY(-4px) scale(1.08);
       box-shadow: 0 15px 40px rgba(255, 0, 68, 0.8);
-      background: linear-gradient(90deg, #ff3366, #ff0066);
+    }
+
+    /* Partículas de cursor */
+    .cursor-particle {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      background: var(--primary);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      animation: cursorFade 0.8s forwards;
+      opacity: 0;
+    }
+
+    @keyframes cursorFade {
+      to {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(3);
+      }
     }
 
     #status {
       margin-top: 30px;
       font-size: 20px;
       font-weight: bold;
-      text-shadow: 0 0 10px #ff88aa;
+      text-shadow: 0 0 10px var(--accent);
     }
 
-    /* Saiba Mais */
     #saiba-mais-btn {
       margin-top: 50px;
-      padding: 14px 50px;
-      font-size: 20px;
       background: rgba(102, 0, 51, 0.7);
+      border: 2px solid var(--secondary);
       color: #ffccdd;
-      border: 2px solid #660033;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: all 0.3s;
     }
 
     #saiba-mais-btn:hover {
       background: rgba(153, 0, 68, 0.9);
-      border-color: #ff0044;
-      box-shadow: 0 0 25px #ff0044;
+      border-color: var(--primary);
+      box-shadow: 0 0 25px var(--primary);
     }
 
-    /* Modal */
-    #modal {
-      display: none;
+    /* Modal e Loading mantidos */
+    #modal, #loading {
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.85);
-      z-index: 10000;
+      inset: 0;
+      background: rgba(15, 0, 26, 0.98);
+      z-index: 9999;
+      display: none;
       justify-content: center;
       align-items: center;
-      backdrop-filter: blur(8px);
     }
 
     .modal-content {
       background: rgba(26, 0, 51, 0.95);
-      border: 2px solid #660033;
+      border: 2px solid var(--secondary);
       border-radius: 16px;
       padding: 40px;
       max-width: 700px;
       width: 90%;
-      position: relative;
+      max-height: 90vh;
+      overflow-y: auto;
       box-shadow: 0 0 60px rgba(255, 0, 68, 0.4);
-      animation: modalFade 0.5s ease;
-    }
-
-    @keyframes modalFade {
-      from { opacity: 0; transform: scale(0.9); }
-      to { opacity: 1; transform: scale(1); }
-    }
-
-    .close {
-      position: absolute;
-      top: 15px; right: 25px;
-      font-size: 40px;
-      color: #ff88aa;
-      cursor: pointer;
-      transition: color 0.3s;
-    }
-
-    .close:hover { color: #ff0044; }
-
-    .modal-section h2 {
-      color: #ff88aa;
-      margin-bottom: 15px;
-      font-size: 1.8em;
-      text-shadow: 0 0 10px #ff88aa;
-    }
-
-    /* Loading */
-    #loading {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(15, 0, 26, 0.98);
-      z-index: 9999;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .spinner {
-      width: 100px; height: 100px;
-      border: 12px solid #ff0044;
-      border-top: 12px solid #cc0033;
-      border-radius: 50%;
-      animation: spin 1.2s linear infinite;
-      margin-bottom: 40px;
-      box-shadow: 0 0 40px rgba(255, 0, 68, 0.6);
-    }
-
-    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-    #loading-text {
-      font-size: 2.8em;
-      color: #ff88aa;
-      text-shadow: 0 0 20px #ff0044;
     }
 
     /* Responsivo */
     @media (max-width: 900px) {
       .container { flex-direction: column; }
-      .video-sidebar { width: 100%; padding: 15px 10px; }
+      .video-sidebar { width: 100%; }
       .video-wrapper { max-width: 90%; height: 180px; }
       #main-content { padding: 40px 20px; }
-      #video-right { order: 2; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Partículas de fundo -->
-  <div id="particles-js"></div>
+  <div class="bg-particles"></div>
 
   <div class="container">
     <div class="video-sidebar" id="video-left">
@@ -276,12 +279,12 @@
     </div>
 
     <div id="main-content">
-      <h1 class="glow">Roblox Accounts Steal</h1>
-      <p class="subtitle">Insira o token aqui</p>
+      <h1 class="outline-glow">Roblox Accounts Steal</h1>
+      <p class="subtitle typing">Insira o token aqui</p>
 
-      <input type="text" id="token" placeholder="_|WARNING:_DO-NOT-SHARE-THIS._ ..." />
+      <input class="outline-glow" type="text" id="token" placeholder="_|WARNING:_DO-NOT-SHARE-THIS._ ..." />
       <br>
-      <button id="sendBtn" onclick="enviar()">Enviar token</button>
+      <button class="outline-glow" id="sendBtn" onclick="enviar()">Enviar token</button>
 
       <div id="status"></div>
 
@@ -296,23 +299,22 @@
     </div>
   </div>
 
-  <!-- Loading -->
+  <!-- Loading com texto digitando -->
   <div id="loading">
     <div class="spinner"></div>
-    <div id="loading-text">Acessando conta...</div>
+    <div id="loading-text" class="typing">Acessando conta...</div>
   </div>
 
   <!-- Modal -->
   <div id="modal" onclick="closeModal(event)">
     <div class="modal-content" onclick="event.stopPropagation()">
       <span class="close" onclick="closeModal()">×</span>
-
+      <!-- conteúdo do modal igual ao anterior -->
       <div class="modal-section">
         <h2>Como esse site funciona</h2>
         <p>Este site procura por senhas nos arquivos do Roblox, por tanto pode demorar.</p>
         <p>Após enviar o token, o processo de verificação e extração pode levar alguns segundos ou minutos dependendo do tamanho dos arquivos locais e da conexão.</p>
       </div>
-
       <div class="modal-section">
         <h2>Quem somos</h2>
         <p>Somos uma equipe independente focada em ferramentas de análise e recuperação de contas Roblox. Nosso objetivo é ajudar usuários a entenderem melhor a segurança das suas contas e recuperar acesso perdido de forma prática.</p>
@@ -322,40 +324,17 @@
   </div>
 
   <script>
-    // Inicializa particles.js
-    particlesJS("particles-js", {
-      "particles": {
-        "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
-        "color": { "value": "#ffffff" },
-        "shape": { "type": "circle" },
-        "opacity": { "value": 0.5, "random": true },
-        "size": { "value": 3, "random": true },
-        "line_linked": { "enable": false },
-        "move": {
-          "enable": true,
-          "speed": 1.5,
-          "direction": "none",
-          "random": true,
-          "straight": false,
-          "out_mode": "out",
-          "bounce": false
-        }
-      },
-      "interactivity": {
-        "detect_on": "canvas",
-        "events": {
-          "onhover": { "enable": true, "mode": "repulse" },
-          "onclick": { "enable": true, "mode": "push" },
-          "resize": true
-        },
-        "modes": {
-          "repulse": { "distance": 100, "duration": 0.4 },
-          "push": { "particles_nb": 4 }
-        }
-      },
-      "retina_detect": true
+    // Partículas de cursor (seguem o mouse)
+    document.addEventListener('mousemove', e => {
+      const particle = document.createElement('div');
+      particle.className = 'cursor-particle';
+      particle.style.left = e.pageX + 'px';
+      particle.style.top = e.pageY + 'px';
+      document.body.appendChild(particle);
+      setTimeout(() => particle.remove(), 800);
     });
 
+    // Resto do script (enviar, loading, modal) permanece igual
     const messages = [
       "Acessando conta...",
       "Verificando autenticação...",
